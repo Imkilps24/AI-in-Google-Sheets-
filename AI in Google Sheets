@@ -1,0 +1,38 @@
+
+  function GPT(input, instruction) {
+
+  const API_KEY = "PASTE YOUR API KEY HERE";
+  const URL = "https://api.openai.com/v1/chat/completions";
+
+  const payload = {
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "system",
+        content: "You are an extraction tool. Extract only the requested information. Do not summarize. Do not explain. Return only the answer."
+      },
+      {
+        role: "user",
+        content: instruction + "\n\nText to analyze:\n" + input
+      }
+    ],
+    temperature: 0
+  };
+
+  const options = {
+    method: "post",
+    headers: {
+      "Authorization": "Bearer " + API_KEY,
+      "Content-Type": "application/json"
+    },
+    payload: JSON.stringify(payload)
+  };
+
+  const response = UrlFetchApp.fetch(URL, options);
+  const result = JSON.parse(response.getContentText());
+
+  return result.choices[0].message.content.trim();
+}
+function myFunction() {
+  
+}
